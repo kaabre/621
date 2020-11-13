@@ -2,6 +2,8 @@ import PseudoNetCDF as pnc
 
 # Sphinx of the black quartz heed my vow
 
+## comemnt 
+
 inpath = '/Users/dhueholt/Documents/ATS621/MER-TOGA_DC8_20171006_R19.ict'
 #outpath = '<path-for-output>'
 infile = pnc.pncopen(inpath, format = 'ffi1001')
