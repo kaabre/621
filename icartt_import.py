@@ -16,3 +16,4 @@ print(infile)
 # patches = infile.plot('<varkey>', plottype = 'longitude-latitude')
 # patches.axes.figure.savefig('/Users/dhueholt/Documents/')
 # infile.save(outpath)
+#having fun
