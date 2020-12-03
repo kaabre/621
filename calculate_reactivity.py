@@ -37,8 +37,9 @@ for key in infile_coeff.columns:
     c = c+1
 
 # Replace missing data markers, otherwise sums are thrown off by the negative values
-conc_match_coeff[conc_match_coeff == -99999] = np.nan
-conc_match_coeff[conc_match_coeff == -8888] = np.nan
+# conc_match_coeff[conc_match_coeff == -99999] = np.nan
+# conc_match_coeff[conc_match_coeff == -8888] = np.nan
+conc_match_coeff[conc_match_coeff < 0] = np.nan #actually, concentrations should never be negative
 
 calc_reactivities = infile_coeff.iloc[:,3:colnum].values * conc_match_coeff[:,3:colnum] #multiply coefficients by concentrations!
 react_frame = infile_coeff.copy(deep=True) #this way we keep header and metadata
