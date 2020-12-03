@@ -38,14 +38,15 @@ pressures = infile_conc.variables['StaticPressure_GMI'].data * 100 #pressure in 
 Av = 6.0221409 * 10**23
 R = 8.314
 number_dens = np.divide((Av * pressures),(R * infile_conc.variables['T']))
+number_dens_cm3 = np.divide(number_dens, 10**(6))
 
 for key in valid_keys:
     if infile_conc.variables[key].units == 'ppt':
-        conc_match_coeff[:,c] = infile_conc.variables[key].data * (10 ** (-12)) * number_dens
+        conc_match_coeff[:,c] = infile_conc.variables[key].data * (10 ** (-12)) * number_dens_cm3
     elif infile_conc.variables[key].units == 'ppb':
-        conc_match_coeff[:,c] = infile_conc.variables[key].data * (10 ** (-9)) * number_dens
+        conc_match_coeff[:,c] = infile_conc.variables[key].data * (10 ** (-9)) * number_dens_cm3
     elif infile_conc.variables[key].units == 'ppm':
-        conc_match_coeff[:,c] = infile_conc.variables[key].data * (10 ** (-6)) * number_dens
+        conc_match_coeff[:,c] = infile_conc.variables[key].data * (10 ** (-6)) * number_dens_cm3
     else:
         print(key)
         conc_match_coeff[:,c] = infile_conc.variables[key].data
