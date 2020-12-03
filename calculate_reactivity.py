@@ -13,9 +13,9 @@ import numpy as np
 # import time # for debugging
 
 ## Concentrations and coefficient file inputs and desired output filename
-inpath_coeff = '/Users/dhueholt/Documents/ATS621/OH_Coefficients_Flight1.csv'
-inpath_conc = '/Users/dhueholt/Documents/ATS621/archive_download_0/MER-TOGA_DC8_20170126_R20.ict'
-outfile = '/Users/dhueholt/Documents/ATS621/OH_Reactivities_Flight1.csv'
+inpath_coeff = '/Users/dhueholt/Documents/ATS621/OH_Coefficients_Flight2_corrected.csv'
+inpath_conc = '/Users/dhueholt/Documents/ATS621/archive_download_0/MER-TOGA_DC8_20170129_R18.ict'
+outfile = '/Users/dhueholt/Documents/ATS621/OH_Reactivities_Flight_TEST.csv'
 
 ## Import data
 infile_coeff = pd.read_csv(inpath_coeff, sep=',',header=0) #import coefficients as dataframe
@@ -29,12 +29,20 @@ infile_conc = pnc.pncopen(inpath_conc, format = 'ffi1001') #import concentration
 
 ## Calculate stuff
 c = 0
+valid_keys = infile_coeff.columns.intersection(infile_conc.variables.keys()) #coefficient keys that are present in ICARTT
 rownum = infile_coeff.UTC_Start.size
-colnum = infile_coeff.columns.size
+colnum = valid_keys.size
 conc_match_coeff = np.empty((rownum,colnum))
-for key in infile_coeff.columns:
+missing = 'Missing key: '
+for key in valid_keys:
     conc_match_coeff[:,c] = infile_conc.variables[key].data #extract concentrations for species of interest
+    # if statement check unit and convert to number density
     c = c+1
+
+for koi in infile_coeff.columns:
+    if koi not in valid_keys:
+        print(missing + koi)
+        infile_coeff.drop(koi,axis=1)
 
 # Replace missing data markers, otherwise sums are thrown off by the negative values
 # conc_match_coeff[conc_match_coeff == -99999] = np.nan
@@ -59,7 +67,10 @@ for kc in range(3,colnum):
 # print(reactivities_frame)
 
 other_keys = ["UTC_Start", "UTC_Stop_TOGA", "T"]
-non_voc_keys = ["H2_UCATS", "CO_UCATS", "H2O2_CIT", "O3_UCATS", "SO2_CIT", "NO_GMI", "NO2_GMI"]
+
+possible_non_voc_keys = ["H2_UCATS", "CO_UCATS", "H2O2_CIT", "O3_UCATS", "SO2_CIT", "NO_GMI", "NO2_GMI"]
+non_voc_keys = list(set(possible_non_voc_keys) & set(valid_keys)) #non-VOC keys that are present in ICARTT
+print(non_voc_keys)
 voc_keys = []
 
 for key in infile_coeff.columns:
