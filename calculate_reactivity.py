@@ -34,9 +34,23 @@ rownum = infile_coeff.UTC_Start.size
 colnum = valid_keys.size
 conc_match_coeff = np.empty((rownum,colnum))
 missing = 'Missing key: '
+pressures = infile_conc.variables['StaticPressure_GMI'].data * 100 #pressure in Pa
+Av = 6.0221409 * 10**23
+R = 8.314
+number_dens = np.divide((Av * pressures),(R * infile_conc.variables['T']))
+
 for key in valid_keys:
-    conc_match_coeff[:,c] = infile_conc.variables[key].data #extract concentrations for species of interest
+    if infile_conc.variables[key].units == 'ppt':
+        conc_match_coeff[:,c] = infile_conc.variables[key].data * (10 ** (-12)) * number_dens
+    elif infile_conc.variables[key].units == 'ppb':
+        conc_match_coeff[:,c] = infile_conc.variables[key].data * (10 ** (-9)) * number_dens
+    elif infile_conc.variables[key].units == 'ppm':
+        conc_match_coeff[:,c] = infile_conc.variables[key].data * (10 ** (-6)) * number_dens
+    else:
+        print(key)
+        conc_match_coeff[:,c] = infile_conc.variables[key].data
     # if statement check unit and convert to number density
+    # nx = cxna
     c = c+1
 
 for koi in infile_coeff.columns:
