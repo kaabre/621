@@ -15,7 +15,7 @@ import numpy as np
 ## Concentrations and coefficient file inputs and desired output filename
 inpath_coeff = '/Users/dhueholt/Documents/ATS621/OH_Coefficients_Flight2_corrected.csv'
 inpath_conc = '/Users/dhueholt/Documents/ATS621/archive_download_0/MER-TOGA_DC8_20170129_R18.ict'
-outfile = '/Users/dhueholt/Documents/ATS621/OH_Reactivities_Flight_TEST.csv'
+outfile = '/Users/dhueholt/Documents/ATS621/OH_Reactivities_Flight2.csv'
 
 ## Import data
 infile_coeff = pd.read_csv(inpath_coeff, sep=',',header=0) #import coefficients as dataframe
