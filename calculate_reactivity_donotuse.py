@@ -37,7 +37,7 @@ R = 8.314
 number_dens = np.divide((Av * pressures),(R * infile_conc.variables['T']))
 number_dens_cm3 = np.divide(number_dens, 10**(6))
 oh_numbden = oh_mixrat * 10**(-12) * number_dens_cm3 # [OH] in stuff per cm3
-oh_numbden[oh_numbden < 0] = np.nan #actually, concentrations should never be negative
+oh_numbden[oh_numbden < 0] = np.nan #concentrations should never be negative
 print(oh_numbden)
 
 rownum = infile_coeff.UTC_Start.size
@@ -73,4 +73,6 @@ react_frame['total_react'] = react_frame.loc[:,voc_keys+non_voc_keys].sum(axis=1
 #Can calculate for arbitrary list of species! Make list of keys, then use same syntax
 
 print(react_frame) #print the reactivities dataframe to the terminal
+total_react = react_frame.total_react.values
+print(total_react.max())
 react_frame.to_csv(outfile) #save reactivities as csv

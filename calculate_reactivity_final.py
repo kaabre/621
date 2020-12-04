@@ -101,4 +101,6 @@ react_frame['total_react'] = react_frame.loc[:,voc_keys+non_voc_keys].sum(axis=1
 #Can calculate for arbitrary list of species! Make list of keys, then use same syntax
 
 print(react_frame) #print the reactivities dataframe to the terminal
+total_react = react_frame.total_react.values
+print(total_react.max())
 react_frame.to_csv(outfile) #save reactivities as csv
