@@ -13,9 +13,9 @@ import numpy as np
 # import time # for debugging
 
 ## Concentrations and coefficient file inputs and desired output filename
-inpath_coeff = '/Users/dhueholt/Documents/ATS621/OH_Coefficients_Flight2_corrected.csv'
-inpath_conc = '/Users/dhueholt/Documents/ATS621/archive_download_0/MER-TOGA_DC8_20170129_R18.ict'
-outfile = '/Users/dhueholt/Documents/ATS621/OH_Reactivities_Flight2.csv'
+inpath_coeff = '/Users/dhueholt/Documents/ATS621/OH_Coefficients_Flight11_corrected.csv'
+inpath_conc = '/Users/dhueholt/Documents/ATS621/archive_download_0/MER-TOGA_DC8_20170221_R18.ict'
+outfile = '/Users/dhueholt/Documents/ATS621/OH_Reactivities_Flight11.csv'
 
 ## Import data
 infile_coeff = pd.read_csv(inpath_coeff, sep=',',header=0) #import coefficients as dataframe
@@ -99,6 +99,11 @@ react_frame['voc_react'] = react_frame.loc[:,voc_keys].sum(axis=1)
 react_frame['non_voc_react'] = react_frame.loc[:,non_voc_keys].sum(axis=1)
 react_frame['total_react'] = react_frame.loc[:,voc_keys+non_voc_keys].sum(axis=1)
 #Can calculate for arbitrary list of species! Make list of keys, then use same syntax
+
+
+react_frame['latitude'] = infile_conc.variables['G_LAT'].data #degrees N
+react_frame['longitude'] = infile_conc.variables['G_LONG'].data #degrees E
+react_frame['altitude'] = infile_conc.variables['G_ALT'].data #m
 
 print(react_frame) #print the reactivities dataframe to the terminal
 total_react = react_frame.total_react.values
